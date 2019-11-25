@@ -1,1 +1,1 @@
-## Simple both-way UTF converter
+## Simple both-way UTF-8 converter
