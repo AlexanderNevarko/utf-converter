@@ -1,4 +1,4 @@
-all: test
+all: clean test
 
 test: test.o converters.o
 	g++ test.o converters.o -o test -std=c++11

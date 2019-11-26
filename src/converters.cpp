@@ -1,4 +1,5 @@
 #include "converters.hpp"
+#include <iostream>
 
 std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
     std::vector<uint8_t> utf_vec;
@@ -28,7 +29,7 @@ std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
             uint8_t byte1, byte2, byte3, byte4;
             byte4 = uint8_t((elem & 0x0000003F) | 0x00000080);
             byte3 = uint8_t(((elem & 0x00000FC0) >> 6) | 0x00000080);
-            byte2 = uint8_t(((elem & 0x0000F000) >> 12) | 0x0000080);
+            byte2 = uint8_t(((elem & 0x0003F000) >> 12) | 0x0000080);
             byte1 = uint8_t(((elem & 0x001C0000) >> 18) | 0x000000F0);
             utf_vec.push_back(byte1);
             utf_vec.push_back(byte2);
@@ -40,8 +41,8 @@ std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
             uint8_t byte1, byte2, byte3, byte4, byte5;
             byte5 = uint8_t((elem & 0x0000003F) | 0x00000080);
             byte4 = uint8_t(((elem & 0x00000FC0) >> 6) | 0x00000080);
-            byte3 = uint8_t(((elem & 0x0000F000) >> 12) | 0x0000080);
-            byte2 = uint8_t(((elem & 0x001C0000) >> 18) | 0x00000080);
+            byte3 = uint8_t(((elem & 0x0003F000) >> 12) | 0x0000080);
+            byte2 = uint8_t(((elem & 0x00FC0000) >> 18) | 0x00000080);
             byte1 = uint8_t(((elem & 0x03000000) >> 24) | 0x000000F8);
             utf_vec.push_back(byte1);
             utf_vec.push_back(byte2);
@@ -53,9 +54,9 @@ std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
             uint8_t byte1, byte2, byte3, byte4, byte5, byte6;
             byte6 = uint8_t((elem & 0x0000003F) | 0x00000080);
             byte5 = uint8_t(((elem & 0x00000FC0) >> 6) | 0x00000080);
-            byte4 = uint8_t(((elem & 0x0000F000) >> 12) | 0x0000080);
-            byte3 = uint8_t(((elem & 0x001C0000) >> 18) | 0x00000080);
-            byte2 = uint8_t(((elem & 0x03000000) >> 24) | 0x00000080);
+            byte4 = uint8_t(((elem & 0x0003F000) >> 12) | 0x0000080);
+            byte3 = uint8_t(((elem & 0x00FC0000) >> 18) | 0x00000080);
+            byte2 = uint8_t(((elem & 0x3F000000) >> 24) | 0x00000080);
             byte1 = uint8_t(((elem & 0x40000000) >> 30) | 0x000000FC);
             utf_vec.push_back(byte1);
             utf_vec.push_back(byte2);
