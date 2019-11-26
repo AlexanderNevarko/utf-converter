@@ -2,4 +2,4 @@
 To run the converter test do:
 
     $ cd src
-    $ make test
+    $ make
