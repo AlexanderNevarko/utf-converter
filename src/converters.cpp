@@ -1,7 +1,5 @@
 #include "converters.hpp"
 
-using namespace std;
-
 std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
     std::vector<uint8_t> utf_vec;
     int len = x.size();
