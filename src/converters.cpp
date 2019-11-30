@@ -1,6 +1,15 @@
 #include "converters.hpp"
 #include <iostream>
 
+#define CHECK_FIRST_TWO_BYTES(x, n) \
+for (int i = 1; i < n+1; i++) { \
+    if ((x[i] & 0xC0) != 0x80) { \
+        printf("Non utf-8 bit set: 0x%X\n", x[i]); \
+        std::vector<uint32_t> ret; \
+        return ret; \
+    } \
+}
+
 std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
     std::vector<uint8_t> utf_vec;
     int len = x.size();
@@ -87,6 +96,7 @@ std::vector<uint32_t> from_utf8(const std::vector<uint8_t> &x) {
         }
         else if (elem >> 5 == 0b110) {
             uint32_t qbyte1, qbyte2;
+            CHECK_FIRST_TWO_BYTES(x, 1)
             qbyte1 = uint32_t(x[i] & 0x1F) << 6;
             qbyte2 = uint32_t(x[i+1] & 0x3F);
             ret_vec.push_back(qbyte1 + qbyte2);
@@ -94,6 +104,7 @@ std::vector<uint32_t> from_utf8(const std::vector<uint8_t> &x) {
         }
         else if (elem >> 4 == 0b1110) {
             uint32_t qbyte1, qbyte2, qbyte3;
+            CHECK_FIRST_TWO_BYTES(x, 2)
             qbyte1 = uint32_t(x[i] & 0x0F) << 12;
             qbyte2 = uint32_t(x[i+1] & 0x3F) << 6;
             qbyte3 = uint32_t(x[i+2] & 0x3F);
@@ -102,6 +113,7 @@ std::vector<uint32_t> from_utf8(const std::vector<uint8_t> &x) {
         }
         else if (elem >> 3 == 0b11110) {
             uint32_t qbyte1, qbyte2, qbyte3, qbyte4;
+            CHECK_FIRST_TWO_BYTES(x, 3)
             qbyte1 = uint32_t(x[i] & 0x07) << 18;
             qbyte2 = uint32_t(x[i+1] & 0x3F) << 12;
             qbyte3 = uint32_t(x[i+2] & 0x3F) << 6;
@@ -111,6 +123,7 @@ std::vector<uint32_t> from_utf8(const std::vector<uint8_t> &x) {
         }
         else if (elem >> 2 == 0b111110) {
             uint32_t qbyte1, qbyte2, qbyte3, qbyte4, qbyte5;
+            CHECK_FIRST_TWO_BYTES(x, 4)
             qbyte1 = uint32_t(x[i] & 0x03) << 24;
             qbyte2 = uint32_t(x[i+1] & 0x3F) << 18;
             qbyte3 = uint32_t(x[i+2] & 0x3F) << 12;
@@ -121,6 +134,7 @@ std::vector<uint32_t> from_utf8(const std::vector<uint8_t> &x) {
         }
         else {
             uint32_t qbyte1, qbyte2, qbyte3, qbyte4, qbyte5, qbyte6;
+            CHECK_FIRST_TWO_BYTES(x, 5)
             qbyte1 = uint32_t(x[i] & 0x01) << 30;
             qbyte2 = uint32_t(x[i+1] & 0x3F) << 24;
             qbyte3 = uint32_t(x[i+2] & 0x3F) << 18;
