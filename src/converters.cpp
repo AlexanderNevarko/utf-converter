@@ -25,7 +25,7 @@ std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
             utf_vec.push_back(byte2);
             utf_vec.push_back(byte3);
         }
-        else if (elem < 0x1FFFFF) {
+        else if (elem < 0x200000) {
             uint8_t byte1, byte2, byte3, byte4;
             byte4 = uint8_t((elem & 0x0000003F) | 0x00000080);
             byte3 = uint8_t(((elem & 0x00000FC0) >> 6) | 0x00000080);
@@ -37,7 +37,7 @@ std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
             utf_vec.push_back(byte4);
 
         }
-        else if (elem < 0x3FFFFFF) {
+        else if (elem < 0x4000000) {
             uint8_t byte1, byte2, byte3, byte4, byte5;
             byte5 = uint8_t((elem & 0x0000003F) | 0x00000080);
             byte4 = uint8_t(((elem & 0x00000FC0) >> 6) | 0x00000080);
@@ -50,7 +50,7 @@ std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
             utf_vec.push_back(byte4);
             utf_vec.push_back(byte5);
         }
-        else {
+        else if (elem < 0x80000000) {
             uint8_t byte1, byte2, byte3, byte4, byte5, byte6;
             byte6 = uint8_t((elem & 0x0000003F) | 0x00000080);
             byte5 = uint8_t(((elem & 0x00000FC0) >> 6) | 0x00000080);
@@ -64,6 +64,11 @@ std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
             utf_vec.push_back(byte4);
             utf_vec.push_back(byte5);
             utf_vec.push_back(byte6);
+        }
+        else {
+            printf("Too big number: %x\nMaximal number is %x\n", elem, 0x7FFFFFFF);
+            std::vector<uint8_t> ret;
+            return ret;
         }
     }
     return utf_vec;
