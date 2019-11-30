@@ -66,7 +66,7 @@ std::vector<uint8_t> to_utf8(const std::vector<uint32_t> &x) {
             utf_vec.push_back(byte6);
         }
         else {
-            printf("Too big number: %x\nMaximal number is %x\n", elem, 0x7FFFFFFF);
+            printf("Too big number: 0x%X\nMaximal number is 0x%X\n", elem, 0x7FFFFFFF);
             std::vector<uint8_t> ret;
             return ret;
         }
